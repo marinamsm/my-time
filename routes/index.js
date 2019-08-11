@@ -8,6 +8,8 @@ router.route('/home').get(timeLogController.listTimeLogs);
 // Route to create a new log
 router.route('/createTimeLog').post(timeLogController.createTimeLog);
 
+//Route to get time logs in a date interval
+router.route('/getTimeLog').get(timeLogController.getTimeLog);
 
 // Routes to get the specified log, update and delete it
 router.route('/timelogs/:timelog_id')

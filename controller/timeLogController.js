@@ -3,6 +3,8 @@ var TimeLog = require('../model/TimeLog');
 
 let requiredFields = ['project', 'activity', 'date', 'startTime', 'endTime', 'intervalDuration']
 
+let dateFields = ['date', 'startTime', 'endTime']
+
 let timeout = 120000; //milliseconds
 
 // service to define the interval between each events batch
@@ -64,13 +66,10 @@ exports.createTimeLog = function (req, res) {
             message: "The request is missing the fields: " + missingFields
         });
     }
-    // timeLog.project = req.body.project;
-    // timeLog.activity = req.body.activity;
-    // timeLog.date = req.body.date;
-    // timeLog.startTime = req.body.startTime;
-    // timeLog.endTime = req.body.endTime;
-    // timeLog.intervalDuration = req.body.intervalDuration; //time in minutes
     let timeLogTmp = req.body;
+    timeLogTmp.date = new Date(timeLogTmp.date);
+    timeLogTmp.startTime = new Date(timeLogTmp.startTime);
+    timeLogTmp.endTime = new Date(timeLogTmp.endTime);
     timeLogTmp.extraCost = timeLogTmp.extraCost || 0;
     timeLogTmp.obs = timeLogTmp.obs || '';
     let timeLog = new TimeLog(timeLogTmp);
@@ -94,13 +93,21 @@ exports.createTimeLog = function (req, res) {
 // GET
 // service to get timeLog's details (name)
 exports.getTimeLog = function (req, res) {
-    TimeLog.findById(req.params.timeLog_id, function (err, timeLog) {
+    TimeLog.find({}, function (err, timeLogs) {
+        let result = [];
+        for(let timeLog of timeLogs){
+            console.log(timeLog)
+            if(new Date(timeLog.startTime).getTime() >= new Date(req.body.startTime).getTime() &&
+            new Date(timeLog.endTime).getTime() <= new Date(req.body.endTime).getTime()){
+                result.push(timeLog);
+            }
+        }
         if (err)
             res.send(err);
         res.json({
             message: 'Success!',
             code: 200,
-            data: timeLog
+            data: result
         });
     });
 };
@@ -109,30 +116,39 @@ exports.getTimeLog = function (req, res) {
 // service to change the name of the timeLog
 // status is added separately, to keep db normalized
 exports.updateTimeLog = function (req, res) {
-    TimeLog.findById(req.params.timeLog_id, function (err, timeLog) {
+    TimeLog.findById(req.params.timelog_id, function (err, timeLog) {
         if (err || !timeLog)
-            res.send("TimeLog not found");
-        for(let key in req.body) {
-            timeLog[key] = req.body[key]
-        }
-        // save the timeLog
-        timeLog.save(function (err) {
-            if (err)
-                res.json(err);
-            res.json({
-                message: 'Success!',
-                code: 200,
-                data: timeLog
+            res.send({404: "TimeLog not found"});
+        else{
+            for(let key in req.body) {
+                timeLog[key] = dateFields.indexOf(key) !== -1 ? new Date(req.body[key]) : req.body[key];
+            }
+            // save the timeLog
+            // timeLog.patch(req.params.timelog_id, timeLog);
+            // res.json({
+            //     message: 'Success!',
+            //     code: 200,
+            //     data: timeLog
+            // });
+            timeLog.save(function (err) {
+                if (err)
+                    res.json(err);
+                res.json({
+                    message: 'Success!',
+                    code: 200,
+                    data: timeLog
+                });
             });
-        });
+        }
     });
 };
 
 // DELETE
 // service to delete a timeLog
 exports.deleteTimeLog = function (req, res) {
+    // console.log(req.params);
     TimeLog.remove({
-        _id: req.params.timeLog_id
+        _id: req.params.timelog_id
     }, function (err) {
         if (err)
             res.send(err);
