@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || env.port;
 
 // console.log("mongo: ", env.database);
-mongoose.connect(env.database);
+mongoose.connect(env.database, {useNewUrlParser: true});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));

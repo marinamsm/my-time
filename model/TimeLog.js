@@ -44,7 +44,7 @@ let timeLogSchema = new Schema({
     }
 });
 
-let TimeLog = module.exports = mongoose.model('TimeLog', timeLogSchema);
+var TimeLog = module.exports = mongoose.model('TimeLog', timeLogSchema);
 
 module.exports.get = function (callback, limit) {
     TimeLog.find(callback).limit(limit);

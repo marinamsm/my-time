@@ -3,7 +3,7 @@ const router = express.Router();
 const timeLogController = require('../controller/timeLogController');
 
 // Route to list all logs in a period of time
-router.route('/home').get(timeLogController.getTimeLog);
+router.route('/home').get(timeLogController.listTimeLogs);
 
 // Route to create a new log
 router.route('/createTimeLog').post(timeLogController.createTimeLog);

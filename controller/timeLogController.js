@@ -1,7 +1,7 @@
 // Import TimeLog model
-TimeLog = require('../model/TimeLog');
+var TimeLog = require('../model/TimeLog');
 
-let requiredFields = ['name', 'project', 'activity', 'date', 'startTime', 'endTime', 'intervalDuration']
+let requiredFields = ['project', 'activity', 'date', 'startTime', 'endTime', 'intervalDuration']
 
 let timeout = 120000; //milliseconds
 
@@ -64,17 +64,17 @@ exports.createTimeLog = function (req, res) {
             message: "The request is missing the fields: " + missingFields
         });
     }
-    let timeLog = new TimeLog();
-    // timeLog.name = req.body.name;
     // timeLog.project = req.body.project;
     // timeLog.activity = req.body.activity;
     // timeLog.date = req.body.date;
     // timeLog.startTime = req.body.startTime;
     // timeLog.endTime = req.body.endTime;
     // timeLog.intervalDuration = req.body.intervalDuration; //time in minutes
-    timeLog = req.body;
-    timeLog.extraCost = timeLog.extraCost || 0;
-    timeLog.obs = timeLog.obs || '';
+    let timeLogTmp = req.body;
+    timeLogTmp.extraCost = timeLogTmp.extraCost || 0;
+    timeLogTmp.obs = timeLogTmp.obs || '';
+    let timeLog = new TimeLog(timeLogTmp);
+    // console.log(timeLog)
     // save the timeLog
     timeLog.save(function (err) {
         if (err)
