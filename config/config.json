@@ -1,0 +1,17 @@
+{
+  "development": {
+    "environment": "development",
+    "port": 8080,
+    "database": "mongodb://localhost:27017/teste"
+  },
+  "staging": {
+    "environment": "staging",
+    "port": 8080,
+    "database": "mongodb://user:passwor@address:port/databasename"
+  },
+  "production": {
+    "environment": "production",
+    "port": 8080,
+    "database": "mongodb://user:passwor@address:port/databasename"
+  }
+}

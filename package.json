@@ -1,0 +1,11 @@
+{
+  "name": "mytime",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "https": "^1.0.0",
+    "mongoose": "^5.4.2"
+  }
+}
