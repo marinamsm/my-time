@@ -22,7 +22,7 @@ exports.listProjects = function(req, res) {
         res.json({
             message: 'Success!',
             code: 200,
-            data: projects
+            data: projects.map(el => el.toJSON())
         });
     });
 };
@@ -41,15 +41,12 @@ exports.createProject = function(req, res) {
     let project = new Project(req.body);
     project.save(function(err) {
         if (err)
-            res.json({
-                code: err.code,
-                message: err.message
-            });
+            res.send(err);
         else
             res.json({
                 message: 'Success!',
                 code: 200,
-                data: project
+                data: project.toJSON()
             });
     });
 };
@@ -63,7 +60,7 @@ exports.getProject = function(req, res) {
         res.json({
             message: 'Success!',
             code: 200,
-            data: project
+            data: project.toJSON()
         });
     });
 };
@@ -85,7 +82,7 @@ exports.updateProject = function(req, res) {
                 res.json({
                     message: 'Success!',
                     code: 200,
-                    data: project
+                    data: project.toJSON()
                 });
             });
         }
@@ -106,7 +103,7 @@ exports.deleteProject = function(req, res) {
                 res.json({
                     message: 'Success!',
                     code: 200,
-                    data: project
+                    data: project.toJSON()
                 });
             });
         }

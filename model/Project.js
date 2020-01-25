@@ -21,6 +21,16 @@ let projectSchema = new Schema({
     }
 });
 
+// Duplicate the ID field.
+projectSchema.virtual('id').get(function(){
+    return this._id; // .toHexString();
+});
+
+// Ensure virtual fields are serialised.
+projectSchema.set('toJSON', {
+    virtuals: true
+});
+
 var Project = module.exports = mongoose.model('Project', projectSchema);
 
 module.exports.get = function (callback, limit) {
