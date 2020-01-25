@@ -4,21 +4,13 @@ const Schema = mongoose.Schema;
 
 // TimeLog fields
 let timeLogSchema = new Schema({
-    // project: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Project'
-    // },
     project: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: 'Project'
     },
     activity: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: Date,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: 'Activity'
     },
     startTime: {
         type: Date,
