@@ -5,7 +5,10 @@ const mongoose = require('mongoose');
 const config = require('./config/config.json');
 const environment = process.env.NODE_ENV || 'development';
 const env = config[environment];
+var cors = require('cors');
 const app = express();
+
+app.use(cors());
 
 // setup server port
 const port = process.env.PORT || env.port;
