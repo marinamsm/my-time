@@ -16,7 +16,15 @@ function checkRequiredFields(body) {
 // GET
 // service to list all projects
 exports.listProjects = function(req, res) {
-    Project.find({deleted: false}, function(err, projects) {
+    const filter = {
+        deleted: false
+    };
+    if (req.query.ids) {
+        filter._id = {
+            $in: req.query.ids
+        };
+    }
+    Project.find(filter, function(err, projects) {
         if (err)
             res.send(err);
         res.json({

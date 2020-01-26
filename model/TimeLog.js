@@ -36,6 +36,16 @@ let timeLogSchema = new Schema({
     }
 });
 
+// Duplicate the ID field.
+timeLogSchema.virtual('id').get(function(){
+    return this._id; // .toHexString();
+});
+
+// Ensure virtual fields are serialised.
+timeLogSchema.set('toJSON', {
+    virtuals: true
+});
+
 var TimeLog = module.exports = mongoose.model('TimeLog', timeLogSchema);
 
 module.exports.get = function (callback, limit) {

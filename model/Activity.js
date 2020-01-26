@@ -23,6 +23,16 @@ let activitySchema = new Schema({
     }
 });
 
+// Duplicate the ID field.
+activitySchema.virtual('id').get(function(){
+    return this._id; // .toHexString();
+});
+
+// Ensure virtual fields are serialised.
+activitySchema.set('toJSON', {
+    virtuals: true
+});
+
 var Activity = module.exports = mongoose.model('Activity', activitySchema);
 
 module.exports.get = function (callback, limit) {

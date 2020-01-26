@@ -24,7 +24,7 @@ exports.listTimeLogs = function(req, res) {
         res.json({
             message: 'Success!',
             code: 200,
-            timeLogs: timeLogs
+            timeLogs: timeLogs.map(el => el.toJSON())
         });
     });
 };
@@ -58,7 +58,7 @@ exports.createTimeLog = function(req, res) {
             res.json({
                 message: 'Success!',
                 code: 200,
-                data: timeLog
+                data: timeLog.toJSON()
             });
     });
 };
@@ -78,7 +78,6 @@ exports.getTimeLog = function(req, res) {
             return;
         }
         for (let timeLog of timeLogs) {
-            console.log(timeLog)
             if (new Date(timeLog.startTime).getTime() >= new Date(req.body.startTime).getTime() &&
                 new Date(timeLog.endTime).getTime() <= new Date(req.body.endTime).getTime()) {
                 result.push(timeLog);
@@ -89,7 +88,7 @@ exports.getTimeLog = function(req, res) {
         res.json({
             message: 'Success!',
             code: 200,
-            data: result
+            data: result.map(el => el.toJSON())
         });
     });
 };
@@ -111,7 +110,7 @@ exports.updateTimeLog = function(req, res) {
                 res.json({
                     message: 'Success!',
                     code: 200,
-                    data: timeLog
+                    data: timeLog.toJSON()
                 });
             });
         }

@@ -16,13 +16,21 @@ function checkRequiredFields(body) {
 // GET
 // service to list all activities
 exports.listActivities = function(req, res) {
-    Activity.find({deleted: false}, function(err, activities) {
+    const filter = {
+        deleted: false
+    };
+    if (req.query.ids) {
+        filter._id = {
+            $in: req.query.ids
+        };
+    }
+    Activity.find(filter, function(err, activities) {
         if (err)
             res.send(err);
         res.json({
             message: 'Success!',
             code: 200,
-            data: activities
+            data: activities.map(el => el.toJSON())
         });
     });
 };
@@ -49,7 +57,7 @@ exports.createActivity = function(req, res) {
             res.json({
                 message: 'Success!',
                 code: 200,
-                data: activity
+                data: activity.toJSON()
             });
     });
 };
@@ -63,7 +71,7 @@ exports.getActivity = function(req, res) {
         res.json({
             message: 'Success!',
             code: 200,
-            data: activity
+            data: activity.toJSON()
         });
     });
 };
@@ -85,7 +93,7 @@ exports.updateActivity = function(req, res) {
                 res.json({
                     message: 'Success!',
                     code: 200,
-                    data: activity
+                    data: activity.toJSON()
                 });
             });
         }
@@ -106,7 +114,7 @@ exports.deleteActivity = function(req, res) {
                 res.json({
                     message: 'Success!',
                     code: 200,
-                    data: activity
+                    data: activity.toJSON()
                 });
             });
         }
